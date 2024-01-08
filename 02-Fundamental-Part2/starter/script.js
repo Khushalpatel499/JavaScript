@@ -72,3 +72,37 @@ const yearsUntilRetirement = (birthYear,firstName) => {
 console.log(yearsUntilRetirement(1991,"khushal"));
 
 // arrow funtion do not get this keyword.
+
+
+// function calling other functions
+
+const cutPieces =function (fruit){
+    return fruit*4;
+}
+const fruitProcessor2 = function(apples,oranges){
+    const applePieces = cutPieces(apples);
+    const orangePieces =cutPieces(oranges);
+
+    console.log(apples,oranges);
+    const juice = `Juice with ${applePieces} and ${orangePieces} oranges.`;
+    return juice;
+}
+console.log(fruitProcessor2(2,3));
+
+
+// Reviewing functions
+
+const calcAge4 = function(birthYear){
+    return 2037 -birthYear;
+}
+const yearsUntilRetirement1= function(birthYear,firstName){
+    const age = calcAge4(birthYear);
+    const retirement = 65-age;
+    if(retirement>0){
+        return retirement;
+    }else{
+        return -1;
+    }
+    return `${firstName} retires in ${retirement} years`;
+}
+console.log(yearsUntilRetirement1(1991,'Khushal'));
