@@ -161,7 +161,7 @@ var job = "programmer";
   console.log(century);
 
 
-  //type conversion and coercion
+  //type conversion 
 
   const inputYear ="2002";
   console.log(Number(inputYear), inputYear);
@@ -183,4 +183,127 @@ var job = "programmer";
  let n= '1'+1; //11(string)
  n=n-1;//10(number)
  let m = 2+3+'8';//58
+
+
+ //truthy and falsy values:
+
+ console.log(Boolean(0));//false
+ console.log(Boolean(undefined));//false
+ console.log(Boolean('Khushal'));//ture
+ console.log(Boolean(''));//false
+ console.log(Boolean({}));//true
+
+ //convertion to boolean is always implicit not explicit or in other words is always tpyed coercion
+ // it happen in two cases when using logical operators  a lgoical context like in codition of if else .
  
+
+ const money =0;
+ if(money){
+    console.log("Don't spend it all");
+ }else{
+    console.log("You should get a job");
+ }
+
+let height;
+if(height){
+    console.log("Height is defined");
+}else{
+    console.log("Height is not defined");
+}
+
+//equality operator == and ===
+
+let myAge ='18';
+
+if(age ===18) console.log("You Just became an adult (strict)");
+if(age ==18) console.log("You became Just adult(loose)");
+
+
+// prompt function
+
+const favourite =prompt("What is ypur favourite number");
+console.log(favourite);
+console.log(typeof favourite);//string
+
+if(favourite===23){
+    console.log("23 is amazing");// not execute because favarourite is string
+}
+
+const favourite1= Number(prompt("What is your liked number"));
+if(favourite1===23){
+    console.log("23 is amazing");
+}else if(favourite1===7){
+    console.log("7 is amazing");
+}else{
+    console.log("Number is not 7 or 23");
+}
+
+// !=(loose) and !==(strict)
+if(favourite1!==23) console.log("why not 23");
+
+
+//logical Operators
+
+const hasDriversLicense =true;
+const hasGoodVision = false;
+
+console.log(hasDriversLicense && hasGoodVision);
+console.log(hasDriversLicense || hasGoodVision);
+console.log(!hasDriversLicense);
+
+const shouldDrive = hasDriversLicense && hasGoodVision;
+if(shouldDrive){
+    console.log("able to drive");
+}else{
+    console.log("not able to drive");
+}
+
+
+
+
+// switch statement
+
+const day ='monday';
+
+switch(day){
+    case 'monday':
+        console.log("Plan course structure");
+        console.log("Go to coding meetup");
+        break;
+    case 'tuesday':
+        console.log("Prepare theory videos");
+        break;
+    case 'wednesday':
+    case 'thursday':
+        console.log('Write code examples');
+        break;
+    case 'friday':
+        console.log('Record vidoes');
+        break;
+    case 'saturday':
+    case 'sunday':
+        console.log("Enjoy the weekend");
+        break;
+    default:
+        console.log('Not a valid day');
+}
+
+
+
+// statement and expression
+
+//statement
+
+if(23> 10){
+    const str ='23 is bigger';// 23 is bigger is expression but the whole line is statement
+}
+
+
+//conditinal (ternary) operator:
+
+const ageYour = 20;
+age >=18? console.log("I like to drink wine🍷"): console.log("I like to drink water💧");
+
+const drink = age>=18 ? 'wine': 'water';
+console.log(drink);
+console.log(`I like to drink ${age>=18 ? 'wine':'water'}`);

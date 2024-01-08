@@ -20,3 +20,18 @@
   12. Operators : 1. mathmetical or airthmetic operator   2. assignment operator  3. Comparsion operator
   13. Template literal : writes string in more normal way and add varibles between them normally.(used backticks ``)
   14.Type Conversion (manually convert from one type to another) , Type Coercion(js automatically converts types).
+  15.Truthy and falsy Values:
+        1. falsy values are value that are not excatly false but will become false when we try to convert them into boolean.
+        2. there are five falsy values 0,'',undefined,null,NaN
+  16. Equality operator: ===(is called strict equality operator  because it doesnt perform type coericon it only true when both values are same) and ==(loose equality operator)
+  ex: '18'==18 (true)
+      '18'===18(false)
+17. prompt function : getting any value from webpage.
+18. expression is a peice of code that produce a value.(ex: 3+4 , 1991). Statement is like bigger piece of code that excuted and which does not produce a value on itself.
+19.Brendan Eich creates the very first version of js in just 10days called Mocha.(1995)
+20. Mocha changes to LiveScript then to JavaScript.(1996)
+21.Microsoft lanuches internet explorer copying js from Netscape and called it Jscript.
+22. Standardize the language ,ECMA relaease ECMAScript(ES1), the first official standard for js(1997).
+23. ES5 is realeased with lots of greatnew features(2009). and then ES6(2015).
+24. Js is backward compatibility(means use old code in now days but not forward compatiblity)
+25. to make forward compatiblity we use transpilling and polyfilling using Babel.
