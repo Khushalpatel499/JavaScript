@@ -50,3 +50,121 @@
  console.log(describePopulation('india',1441));
  console.log(describePopulation('china',35));
  console.log(describePopulation('maldives',6));
+
+
+ const populations =[144,122,188,199];
+
+ /*if(populations.length ===4){
+    console.log("true");
+ }else{
+    console.log("false");
+ }*/
+ console.log(populations.length===4);
+
+ const percentages =[percentageOfWorld1(populations[0]),percentageOfWorld1(populations[1]),percentageOfWorld1(populations[2]),percentageOfWorld1(populations[populations.length-1])];
+ console.log(percentages);
+
+
+
+
+const neighbour= ['pakistan','srilanka','china','nepal'];
+
+console.log(neighbour.push('Utopia'));
+console.log(neighbour.pop());
+if(!neighbour.includes('Germany')){
+    console.log("Probably not a central European country");
+}
+
+const index = neighbour.indexOf('pakistan');
+console.log(index);
+neighbour[index] ='Bangladesh';
+console.log(neighbour);
+
+
+//objects
+
+const myCountry ={
+     country : 'india',
+     capital : 'delhi',
+     language: 'hindi',
+     population: 255,
+     neighbours: ['pakistan','china','srilanka','nepal']
+};
+console.log(myCountry);
+
+console.log(`${myCountry.country} has ${myCountry.population} million ${myCountry.language} speaking people,${myCountry.neighbours.length} neighbouring countries and a capital called ${myCountry.capital}`);
+myCountry.population+=2;
+console.log(myCountry);
+myCountry['population']-=2;
+console.log(myCountry);
+
+//object methods
+
+const myCountry1 ={
+    country : 'india',
+    capital : 'delhi',
+    language: 'hindi',
+    population: 255,
+    neighbours: ['pakistan','china','srilanka','nepal'],
+
+    describe : function(){
+        return `${this.country} has ${this.population} million ${this.language} speaking people,${this.neighbours.length} neighbouring countries and a capital called ${this.capital}`;
+    },
+
+    checkIsland :function(){
+        // this.isIsland = this.neighbours.length===0 ? true:false;
+        // return this.isIsland;
+        this.isIsland = !Boolean(this.neighbours.length);
+        return this.isIsland;
+    }
+};
+
+console.log(myCountry1.describe());
+
+console.log(myCountry1.checkIsland());
+console.log(myCountry1.isIsland);
+
+
+//for loop
+
+for(let voter=1;voter<=50;voter++){
+    console.log(`Voter number ${voter} is currently voting`);
+}
+
+
+
+const populations1 =[144,122,188,199];
+
+const percentages2 =[];
+for(let i=0;i<populations1.length;i++){
+    percentages2.push(percentageOfWorld1(populations1[i]))
+}
+console.log(percentages2);
+
+
+//loop backword and loops in loops
+
+const listOfNeighbours =[
+    ['Canada','Mexico'],
+    ['Spain'],
+    ['Norway','Sweden','Russia']
+];
+
+for(let i=0;i<listOfNeighbours.length;i++){
+    console.log(`----${listOfNeighbours[i][0]}`);
+    for(let j=1;j<listOfNeighbours[i].length;j++){
+        console.log(`${listOfNeighbours[i][j]}`);
+    }
+}
+
+
+
+//while loop
+
+const percentages3 = [];
+let i =0;
+while(i<populations1.length){
+    percentages3.push(percentageOfWorld1(populations1[i]));
+    i++;
+}
+console.log(percentages3);
