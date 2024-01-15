@@ -62,6 +62,7 @@ document.querySelector('.check').addEventListener('click', function () {
   //console.log(document.querySelector('.guess').value);
   //document.querySelector('.message').textContent = 'correct Number!';
   // what ever we got from user input is basically a type of string
+  //.value is used for input,textarea,select.
   const guess = Number(document.querySelector('.guess').value);
   console.log(guess, typeof guess);
 
@@ -118,7 +119,7 @@ document.querySelector('.check').addEventListener('click', function () {
 // that function will contain exactly the code that should be ececuted whenever  type of event happen
 // that function is going to be called the event handler. because a function is just a value
 
-//we do not funtion anywhere but js engine who call this funtion as soon as event happen.
+//we do not  call funtion anywhere but js engine who call this funtion as soon as event happen.
 
 //add functionality for again
 
