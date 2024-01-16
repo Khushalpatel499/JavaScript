@@ -155,3 +155,207 @@ calAge(1991);
 
 // creating new variable with same name as outer scope variable is valid in that block only
 // reassinging outer scope variable changed that variable
+
+//Execution context
+//three types: variable environment, scope chain ,this keyword
+
+// hoisting: make some types of variable accesible /usable in the code before they are actually declared."variables lifted to the top of their scope".
+//before execution ,code is scanned for variable declarations, and for each variable, a new property is created in the variable environment object.
+
+//                                              hoisted?          initial value                             scope
+//function decalaration                          yes                actual function                   block(in strict mode otherwise function)
+//var variables                                  yes              undefined                                  function
+//let and const variable                         no               <uninitialized>,TDZ(Temporal Dead Zone)     block
+//function expression and arrow function            depends if using var or let/const
+//
+
+//why hosting:
+// using functions before actual declaration
+//var hosting is just a byproduct.
+
+//why TDZ?
+///makes it easier to avoid and catch errors(accesing variables before declaraiton is bad practice).
+// makes const variable actually work.
+
+// Hoisting and TDZ in pratice
+
+//variables
+
+console.log(me);
+// console.log(job);
+// console.log(year);
+
+var me = 'Jonas';
+let job = 'teacher';
+const year = 1991;
+
+//funtions
+
+console.log(addDecl(2, 3));
+console.log(addExpr(2, 3));
+console.log(addArrow);
+console.log(addArrow(2, 3));
+function addDecl(a, b) {
+  return a + b;
+}
+
+const addExpr = function (a, b) {
+  return a + b;
+};
+
+var addArrow = (a, b) => a + b;
+
+//Example:
+if (!numProducts) deleteShoppingCart(); // here due to var and hosting numproduct became undefined and undefined is falsy value.
+
+var numProducts = 10;
+function deleteShoppingCart() {
+  console.log('ALL product deleted!');
+}
+
+// decalred with var create  window objet while let and const not
+var x = 1;
+let y = 2;
+const z = 3;
+
+console.log(x === window.x);
+console.log(x === window.y);
+console.log(x === window.z);
+
+//how the this keyword works
+
+//this keyword/variable: special variable that is created for every execution context(every funtion).
+//takes the value of(points to) the 'owner' of the funtion in which the this keyword is used.
+
+//this is not static .it depends on how the funtion is called,and its value is only assinged when the function isactually called
+
+//method    this =<object that is calling the method>
+///simple function call this =undefined(in strict mode otherwise window(in the browser))
+// arrow function this =< of surrounding function(lexical this)>
+//event listener  this =<DOM element that the handler is attached to>
+//new,call,apply,bind later learn
+
+//this does not point to the function itself,and also not the its variable environment.
+
+//this keyword in pratice
+console.log(this);
+const calAge = function (birthYear) {
+  console.log(2037 - birthYear);
+  console.log(this);
+};
+calAge(1991);
+
+const calAgeArrow = birthYear => {
+  console.log(2037 - birthYear);
+  console.log(this);
+};
+calAgeArrow(1980);
+
+const jonas = {
+  year: 1991,
+  calAge: function () {
+    console.log(this);
+    console.log(2037 - this.year);
+  },
+};
+jonas.calAge();
+
+const matilda = {
+  year: 2017,
+};
+//call method borrowing
+matilda.calAge = jonas.calAge;
+matilda.calAge();
+
+const f = jonas.calAge;
+f();
+
+//Regular function vs arrow function.
+var myName = 'Khushal';
+const khushal = {
+  myName: 'khushal',
+  lastName: 'Patel',
+  year: 1999,
+  calAge: function () {
+    console.log(this);
+    console.log(2037 - this.year);
+    // const self = this; // self or that
+    // const isMillenial = function () {
+    //   //   console.log(this);
+    //   //   console.log(this.year >= 1981); //here this function is undefined because here reuglar function call
+    //   console.log(self);
+    //   console.log(self.year >= 1981);
+    // };
+    // isMillenial(); // now the two solutions are:1. solution is use self
+    // //2.solution is use arrow function
+
+    const isMillenial = () => {
+      console.log(this);
+      console.log(this.year >= 1981);
+    };
+    isMillenial();
+  },
+  greet: () => {
+    console.log(this);
+    console.log(`hey${this.myName}`); // arrow function doesnt have this keyword
+  }, //it used this keyword from surrounding and the parent scope of greet  method is global scope.
+};
+khushal.greet();
+
+//argument keywords.(only avaiable in regular functions)
+
+const addArg = function (a, b) {
+  console.log(arguments);
+  return a + b;
+};
+addArg(2, 5);
+addArg(2, 5, 10, 7); // arguments is accept
+
+var addArgArrow = () => {
+  console.log(arguments);
+  return a + b;
+};
+addArgArrow(2, 5, 8); //argument is not defined.
+
+//Primitive vs Object(primitive vs reference types)
+//primitive type
+let age = 30;
+let oldAge = age;
+age = 31;
+console.log(age);
+console.log(oldAge);
+//reference type
+const me = {
+  name: 'Khushal',
+  age: 30,
+};
+
+const friend = me;
+friend.age = 27;
+console.log('friend', friend);
+console.log('me', me);
+//here we can see that my age is also updated.
+// primitive stored in call stack while object refernce type store in heap
+friend = {}; //doesnot allow because it stored in different position memory or friend is const
+
+//copying objects
+const jessica2 = {
+  firstName: 'Khushal',
+  lastName: 'Patel',
+  age: 27,
+  family: ['Alice', 'Bob'],
+};
+
+const jessicaCopy = Object.assign({}, jessica2); // oject.assign merge two object and return new one.(it only create copy and deep copy if object inside object it not work)
+jessicaCopy.lastName = 'Davis';
+console.log('Before marriage', jessica2);
+console.log('after marriage', jessicaCopy);
+
+jessicaCopy.family.push('mary');
+jessicaCopy.family.push('john');
+console.log(jessica2);
+console.log(jessicaCopy); //here both console add 4 element in array(it can be solved by external library like lo-dash)
+//How Javascript work behind the secenes:
+//1.Prototypal inheritance:Object Oriented Programming
+//2. Event loop: Asynchronous js : promises,async/await and ajax
+//3. how the dom really work : advanced dom and event
