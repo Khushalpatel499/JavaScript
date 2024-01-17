@@ -267,3 +267,125 @@ restaurant.orderPizza && restaurant.orderPizza('mushroom', 'spanich');
 
 //we can use the or operator to set default values,
 // we can use and operator to execute code in second operand if the first one is true
+
+//The nullish coalescing operator
+// if nullish values come it will continue the elvalution else it will short cirucit.
+
+restaurant.newGuest = 0;
+const guest3 = restaurant.newGuest || 10;
+console.log(guest3); //output:10;
+
+const guestCorrect = restaurant.newGuest ?? 10;
+console.log(guestCorrect); // output:0
+//Nullish: null and undefined(not 0 or '')
+const guestCorrect1 = restaurant.member ?? 10;
+console.log(guestCorrect); // output:10
+
+//Logical assignemnt operators
+
+const rest1 = {
+  name: 'Capri',
+  //   numGuests: 20,
+  numGuests: 0,
+};
+
+const rest2 = {
+  name: 'Le Piazza',
+  owner: 'Giovanni Rossi',
+};
+
+//OR assignment operator
+//we want to add default number of guest property if that restaurent objects
+// rest1.numGuests = rest1.numGuests || 10;
+// rest1.numGuests ||= 10;
+// rest2.numGuests = rest2.numGuests || 10;
+// rest2.numGuests ||= 10;
+//
+
+//if we set in rest1 numGuest=0 then conslole return 10 beacuse 0 is falsy value to solve this we use
+//Nullish assignment operatorconsole.log(rest1.numGuests);
+// console.log(rest2.numGuests);
+rest1.numGuests ??= 10;
+rest2.numGuests ??= 10;
+console.log(rest1.numGuests);
+console.log(rest2.numGuests);
+
+//and assignment operator
+rest1.owner &&= '<ANONYMOUS>';
+rest2.owner &&= '<ANONYMOUS>';
+console.log(rest1);
+console.log(rest2);
+
+//Looping over arrays using for-of loop
+
+const menu2 = [...restaurant.starterMenu, ...restaurant.mainMenu];
+for (const item of menu2) console.log(item);
+//how to get index
+// for (const item of menu.entries()) {
+//   console.log(item); // it give output an array with index and value
+//   console.log(`${item[0] + 1}:${item[1]}`);
+// }
+for (const [i, el] of menu.entries()) {
+  console.log(item); // it give output an array with index and value
+  console.log(`${i + 1}:${el}`);
+}
+console.log(menu.entries()); //it give iterator
+console.log([...menu.entries()]);
+
+//enhanced object literals
+
+/*  const weekdays=['mon','tue','wed','thu','fri','sat','sun'];
+
+const openingHours= {
+    [weekdays[3]]: {
+      open: 12,
+      closs: 22,
+    },
+    [weekdays[4]]: {
+      open: 11,
+      close: 23,
+    },
+    [`days-${2+4}`]: {
+      open: 0, // open 24 hours
+      close: 24,
+    },
+  },
+
+const restaurant = {
+  name: 'Classico Italiano',
+  location: 'Via Angelo Tavanti 23, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+  onder: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+  },
+
+  //es6 enhanced object literal
+  openingHours,
+  
+  //   orderDelivery(obj) {
+  //     console.log(obj);
+  //   },
+  orderDelivery({
+    starterIndex = 1,
+    mainIndex = 0,
+    time = '20:00',
+    address,
+  }) {
+    console.log(
+      `Orderr received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
+    );
+  },
+  orderPasta(ing1, ing2, ing3) {
+    console.log(
+      `Here is your declicious pasta with ${ing1},${ing2} and ${ing3}`
+    );
+  },
+  orderPizza(mainIngredient, ...otherIngredient) {
+    console.log(mainIngredient);
+    console.log(otherIngredient);
+  },
+};
+
+*/
