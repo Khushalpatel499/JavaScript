@@ -21,7 +21,7 @@ const restaurant = {
   categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-  onder: function (starterIndex, mainIndex) {
+  order: function (starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
   openingHours: {
@@ -89,7 +89,7 @@ console.log(main, secondary);
 console.log(main, secondary);
 
 //receive 2 return values form a function
-const [starter, mainCourse] = restaurant.onder(2, 0);
+const [starter, mainCourse] = restaurant.order(2, 0);
 console.log(starter, mainCourse);
 
 //nested array
@@ -325,12 +325,12 @@ for (const item of menu2) console.log(item);
 //   console.log(item); // it give output an array with index and value
 //   console.log(`${item[0] + 1}:${item[1]}`);
 // }
-for (const [i, el] of menu.entries()) {
-  console.log(item); // it give output an array with index and value
+for (const [i, el] of menu2.entries()) {
+  //  console.log(item); // it give output an array with index and value
   console.log(`${i + 1}:${el}`);
 }
-console.log(menu.entries()); //it give iterator
-console.log([...menu.entries()]);
+console.log(menu2.entries()); //it give iterator
+console.log([...menu2.entries()]);
 
 //enhanced object literals
 
@@ -357,7 +357,7 @@ const restaurant = {
   categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
   starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-  onder: function (starterIndex, mainIndex) {
+  onder(starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
   },
 
@@ -385,7 +385,249 @@ const restaurant = {
   orderPizza(mainIngredient, ...otherIngredient) {
     console.log(mainIngredient);
     console.log(otherIngredient);
+    
   },
 };
 
 */
+
+//without optional chaning
+if (restaurant.openingHours && restaurant.openingHours.mon) {
+  console.log(restaurant.openingHours.mon.open);
+}
+
+//wiht optional chaining(if before ?  thes symbol property exist then run next exist means not null or not undefined)
+console.log(restaurant.openingHours.mon?.open);
+//multiple optional chaining
+console.log(restaurant.openingHours?.mon?.open);
+
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+for (const day of days) {
+  // here we cant do .day because day is not actual property name of object
+  //   const open = restaurant.openingHours.day?.open;
+  // we used bracket notation to access
+  const open = restaurant.openingHours[day]?.open ?? 'closed';
+  console.log(`On ${day},we opent at ${open}`);
+}
+
+//optional chaning on methods
+
+console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+console.log(restaurant.orderRisotto?.(0, 1) ?? 'Method does not exist');
+
+//optional chaning on array
+const users = [{ name: 'Jonas', email: 'hello@.io' }];
+//without  optional chaning
+if (users.length > 0) console.log(users[0].name);
+else console.log('user array empty');
+
+//with optional changing
+console.log(users[0]?.name ?? 'user array empty');
+
+// we loop over array which is iterable also we loop over object which is not iterable
+//so we want loop over on object property names(also called keys),values or both.
+
+// over keys
+const properites = Object.keys(openingHours);
+console.log(properites); //basically output is an array with properties name
+// console.log(`we are open on ${properites.length} days`);
+let openStr = `we are open on ${properites.length} days:`;
+// for (const day of Object.keys(openingHours)) {
+//   console.log(day);
+// }
+for (const day of properites) {
+  openStr += `${day},`;
+}
+console.log(openStr);
+
+//properties values
+const values = Object.values(openingHours);
+console.log(values);
+
+//Entire object
+const entires = Object.entries(openingHours);
+console.log(entires);
+
+//[key,value]
+for (const x of entires) {
+  console.log(x);
+}
+for (const [day, { open, close }] of entires) {
+  console.log(`On ${day} we open at ${open} and close at ${close}`);
+}
+
+//sets
+//sets is collection of unique values
+//sets also are iterables
+
+const orderSet = new Set(['Pasta', 'Pizza', 'Pizza', 'Risotto', 'Pasta']);
+console.log(orderSet);
+//strings also are iterables
+console.log(new Set('Jonas'));
+console.log(orderSet.size);
+//check present or not in set
+console.log(orderSet.has('Pizza')); //output:true
+//add new element in set
+orderSet.add('Garlic Bread');
+console.log(orderSet);
+//delete elements
+orderSet.delete('Risotto');
+//reterive value form set(in set there is not indexes)
+//beacuse there is no meaining of getting data out of set becuase all values are unique only we
+//need to know certain value is present or not
+
+//delete all elments of the set
+// orderSet.clear();
+
+//looping over set
+for (const order of orderSet) console.log(order);
+
+//the main use of set is to remove duplicate values of the array
+//example
+//let we have an array of staff of a restaurents and we want to know what different position are in array
+const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
+// create an set and pass iterable in the set
+// const staffUnique = new Sett(staff);
+// console.log(staffUnique);
+
+//now we want to store position into an array of restaurent
+//as we know spread(...) operator work on all iterables
+const staffUnique = [...new Sett(staff)];
+console.log(staffUnique);
+console.log(
+  new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size
+);
+
+// how many differnt letters in an string
+console.log(new Set('KhushalPatel').size);
+
+//map data structure(to map values to keys)
+//data store in key value pairs
+//diffrence between map and object(in map keys can be anytype and huge while in object key are basically strings)
+//it could even be objects, or array or other maps
+
+const rest = new Map(); //empty map
+//pass key value pair use set method
+rest.set('name', 'Classio Italiano');
+rest.set(1, 'Firenze,Italy');
+console.log(rest.set(2, 'Lisbon,Portugal'));
+
+//calling the sett method return updted map so we can add more method continusly
+rest
+  .set('categores', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('Open', 11)
+  .set('Close', 23)
+  .set(true, 'We arre open')
+  .set(false, 'We are close');
+
+//read data from map use get method by passing the name of key
+console.log(rest.get('name'));
+console.log(rest.get(true));
+
+const time = 22;
+console.log(rest.get(time > rest.get('Open') && time < rest.get('Close')));
+
+//check if map contain certain key or not
+console.log(rest.has('categories'));
+
+//delete in map
+rest.delete(2);
+console.log(rest);
+console.log(rest.size);
+//rest.clear();
+//we can also delete properites from object using delete operator but that is very slow process
+// yes object also have method hasOwnProperty lern in oops
+
+//we can used array and object as map keys
+// rest.set([1, 2], 'Test');
+// console.log(rest.get([1, 2])); //output:undefined
+//beacuse in console and rest both array [1,2] are not same object
+//they are not the same object in the heap
+//in order to make it work we have to do
+const arr3 = [1, 2];
+rest.set(arr, 'Test');
+console.log(rest.get(arr));
+// these will used in dump element a special type of object.
+
+rest.set(document.querySelector('h1'), 'Heading');
+console.log(rest);
+
+//other method to set element in an map
+
+const question = new Map([
+  ['question', 'What is the best programming language in the world'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'correct🎉'],
+  [false, 'Try again!'],
+]);
+console.log(question);
+//above way is similar to
+
+console.log(Object.entries(openingHours));
+
+//therefore there is an easy way to convert from objects to map.
+const hoursMap = new Map(Object.entries(openingHours));
+console.log(hoursMap);
+
+//iteration in map because map are iterables
+//only differnce in object and map is we need object.entries() in object not in map for forloop
+
+//quiz app
+console.log(question.get('question'));
+for (const [key, value] of question) {
+  if (typeof key === 'number') console.log(`Answer ${key}:${value}`);
+}
+const answer = Number(prompt('Your answer'));
+console.log(answer);
+// console.log(
+//   answer === question.get('correct') ? question.get(true) : question.get(false)
+// );
+console.log(question.get(question.get('correct') === answer));
+
+//convert map to array
+console.log([...question]);
+//other method
+console.log(question.entries());
+//convert to array
+console.log([...question.entries()]);
+console.log(question.keys());
+console.log([...question.keys()]);
+console.log(question.values());
+console.log([...question.values()]);
+
+//summary which data structure to use.
+//source of data
+//1. from the program itself: data written directly in source code(eg: status message)
+//2. form the UI: data input from the user or data written in DOM (eg: task in todo app);
+//3.from external sources: data fetched for example from web API(eg: recipe objects)
+
+//if we need simple list of values if so then we are gonna use an array or a set.
+//or if we need key/value pair then we used objects or map.
+//data from web APIs usually comes in a special data format called json.
+//other buit-in: weakMap and WeakSet
+//non-built in:Stack,queue,linked lists ,tree and hash tables
+
+//arrays: use when you need ordered list of values(might contain duplicates)
+// use when you need to manipulate data
+
+//sets: use when you need to work with uique values
+//use when high-performance is really important.
+//use to remove duplicates from arrays
+
+//Objects
+//more traditional key/values store('abused' objects)
+//easier to write and access values with . and []
+//use when you need to include functions(methods)
+//use when working with json (can convert to map)
+
+//maps
+//better performance
+//keys can have any data type
+//easy to iterate
+//easy to compute size
+//use when you simply need to map key to value
+//use when you need keys that are not strings

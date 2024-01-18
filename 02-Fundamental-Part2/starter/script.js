@@ -196,7 +196,7 @@ const myData ={
 console.log(myData.lastName);
 //2. bracket notation
 console.log(myData['lastName']);
-
+//IMP below bracket notation
 const nameKey='Name';
 console.log(myData['first'+nameKey]);
 console.log(myData['last'+nameKey]);

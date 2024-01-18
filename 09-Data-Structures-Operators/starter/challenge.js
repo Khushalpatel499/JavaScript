@@ -82,3 +82,33 @@ printGoals(...game.scored);
 
 team1 < team2 && console.log('Team 1 is win');
 team1 > team2 && console.log('Team 2 is win');
+
+//challenge 2:
+//1.
+for (const [i, el] of game.scored.entries()) {
+  console.log(`Goal ${i + 1}:${el}`);
+}
+
+//2.
+let avg = 0;
+const odds = Object.values(game.odds);
+for (const odd of odds) {
+  avg += odd;
+}
+//console.log(typeof Object.values(game.odds));
+avg /= odds.length;
+console.log(avg);
+
+//3
+const entries = Object.entries(game.odds);
+for (const [team, odd] of entries) {
+  const str = team === x ? 'draw' : `victory ${game[team]}`;
+  console.log(`odds ${str} of ${odd}`);
+}
+
+//4.BOnus
+const scores = {};
+for (const player of game.scored) {
+  scores[player] ? scores[player]++ : (scores[player] = 1);
+}
+console.log(scores);
