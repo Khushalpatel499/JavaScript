@@ -488,12 +488,12 @@ for (const order of orderSet) console.log(order);
 //let we have an array of staff of a restaurents and we want to know what different position are in array
 const staff = ['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter'];
 // create an set and pass iterable in the set
-// const staffUnique = new Sett(staff);
+// const staffUnique = new Set(staff);
 // console.log(staffUnique);
 
 //now we want to store position into an array of restaurent
 //as we know spread(...) operator work on all iterables
-const staffUnique = [...new Sett(staff)];
+const staffUnique = [...new Set(staff)];
 console.log(staffUnique);
 console.log(
   new Set(['Waiter', 'Chef', 'Waiter', 'Manager', 'Chef', 'Waiter']).size
@@ -631,3 +631,172 @@ console.log([...question.values()]);
 //easy to compute size
 //use when you simply need to map key to value
 //use when you need keys that are not strings
+
+//WOrking with strings
+
+const airline = 'TAP Air Portugal';
+const plane = 'A320';
+
+console.log(plane[0]); //output: A
+console.log(plane[1]); //output: 3
+console.log('B737'[0]); //output:B
+
+console.log(airline.length);
+console.log('B737'.length);
+
+console.log(airline.indexOf('r')); //first r come output:6
+console.log(airline.lastIndexOf('r')); //last r come output:10
+//console.log(airline.indexOf('portugal'));//output:-1 beacuse it is case sensitive
+console.log(airline.indexOf('Portugal')); //output: 8
+
+//it is used to extract of a string using the slice method and a slice method needs indexes as arguments.
+
+//slice method
+console.log(airline.slice(4)); //output:Air Portugal
+//4 is the begin where extraction start
+//similary we can also specified end parameter
+console.log(airline.slice(4, 7)); //7 is end but it not included
+//the length of extracted index always be end -begining
+
+console.log(airline.slice(0, airline.indexOf(' '))); //output:TAP
+console.log(airline.slice(airline.lastIndexOf(' ') + 1));
+
+//negative start from end
+
+console.log(airline.slice(-2)); //output:al
+console.log(airline.slice(1, -1));
+
+const checkMiddleSeat = function (seat) {
+  //B and E are middle seats
+  const s = seat.slice(-1);
+  if (s === 'B' || s === 'E') console.log('YOu got the middle seat');
+  else console.log('You got lucky');
+};
+checkMiddleSeat('11B');
+checkMiddleSeat('23C');
+checkMiddleSeat('3E');
+
+//we know strings are primitive so why do we have methods?
+//whenever we call method on string js convert string primitive to a string object
+//and then on that object method are called and this process is called boxing.
+//and operation done it return back to string primitive
+console.log(new String('jonas'));
+console.log(typeof new String('jonas'));
+console.log(typeof new String('jonas').slice(1));
+
+//change case of string
+console.log(airline.toLowerCase());
+console.log(airline.toUpperCase());
+
+//Fix capitalization in name
+const passenger = 'jOnAs'; // Jonas
+const passengerLower = passenger.toLowerCase();
+const passengerCorrect =
+  passengerLower[0].toUpperCase() + passengerLower.slice(1);
+console.log(passengerCorrect);
+
+//comparing emails
+const email = 'hello@jonas.io';
+const loginEmail = '  Hello@Jonas.Io \n';
+
+const lowerEmail = loginEmail.toLowerCase();
+const trimmedEmail = lowerEmail.trim();
+console.log(trimmedEmail);
+
+const normalizedEmail = loginEmail.toLowerCase().trim();
+console.log(normalizedEmail);
+console.log(email === normalizedEmail);
+
+//replacing
+const priceGB = '288,97&';
+const priceUS = priceGB.replace('&', '$').replace(',', '.');
+console.log(priceUS);
+//like other replace create new string it not mutate original one.
+const announcement =
+  'All passengers come to boarding door 23. Boarding door 23!';
+console.log(announcement.replace('door', 'gate')); // it replace only first door
+//console.log(announcement.replaceAll('door','gate'));
+
+//other solution is by using regular expression
+// write in /  / with g flag which means global
+console.log(announcement.replace(/door/g, 'gate'));
+
+//boolean
+const plane1 = 'Airbus A320neo';
+
+console.log(plane1.includes('A320')); //true
+console.log(plane1.includes('Boeing')); //false
+console.log(plane.startsWith('Aib')); //false
+
+if (plane.startsWith('Airbus') && plane.endsWith('neo')) {
+  console.log('Part of the NEW Aribus family');
+}
+
+//imp : when we receive input from user we usually always start by putting everything in lower case.
+
+//practice example
+
+const checkBaggage = function (items) {
+  const baggage = items.toLowerCase();
+  if (baggage.includes('knife') || baggage.includes('gun')) {
+    console.log('You are NOT allowed on board');
+  } else {
+    console.log('Welcome aboard!');
+  }
+};
+checkBaggage('I have a laptop, some Food and a pocket knife');
+checkBaggage('Socks and camera');
+checkBaggage('Got some snacks and a gun for protection');
+
+//split method (it allow to split string into multiple parts based on a divider string)
+//if have a string and call .split method  with a divider string
+//and then we get an array
+
+console.log('a+very+nice+strng'.split('+'));
+console.log('Khushal Patel'.split(' '));
+
+const [firstName, lastName] = 'Khushal Patel'.split(' ');
+
+//join method opposite of split
+
+const newName = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
+
+const capitalizeName = function (name) {
+  const name = capitalizeName.split(' ');
+  const nameUpper = [];
+  for (const n of name) {
+    // nameUpper.push(n[0].toUpperCase() + n.slice(1));
+    nameUpper.push(n.replace(n[0], n[0].toUpperCase()));
+  }
+  console.log(nameUpper.join(' '));
+};
+capitalizeName('khushal ann simith davis');
+capitalizeName('khushal patel');
+
+//padding a string means number of characters to string until a string has a certain desired length
+// start with .padStart(length we want for the string,character)
+
+const message = 'GO to gate 23!';
+console.log(message.padStart(25, '+').padEnd(30, '+'));
+console.log('Khushal'.padStart(23, '+'));
+
+//pratical examlpe of padding when we see credit card number we never see the entire number.
+const maskCreditCard = function (number) {
+  const str = number + '';
+  const last = str.slice(-4);
+  return last.padStart(str.length, '*');
+};
+console.log(maskCreditCard(648958930));
+console.log(maskCreditCard(2349854930488930));
+console.log(maskCreditCard('2345676954837495'));
+
+//repeat method
+const message2 = 'Bad wether... ALl departures delayed..';
+console.log(message2.repeat(5));
+
+const planesInLine = function (n) {
+  console.log(`There are ${n} planes in line ${'✈️'.repeat(n)}`);
+};
+planesInLine(2);
+planesInLine(10);
+planesInLine(15);
