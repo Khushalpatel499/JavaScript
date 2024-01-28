@@ -3,7 +3,7 @@
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.close-modal');
-const btnOpenModal = document.querySelectorAll('.show-modal');
+const btnOpenModal = document.querySelectorAll('.show-modal'); //here queryselector select only first button but with all it select all button with same naem of nodelist
 console.log(btnOpenModal);
 // add and remove functionality of classes
 //each class functions a bit like container with lot of properties in it

@@ -81,20 +81,57 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const formatMovementDate = function (date, locale) {
+  const calcdaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+  const passedDays = calcDisplayBalance(new Date(), date);
+  console.log(passedDays);
+  if (passedDays === 0) return 'Today';
+  if (passedDays === 1) return 'Yesterday';
+  if (passedDays <= 7) return `${passedDays} days ago`;
+
+  //   const day = `${date.getDate()}`.padStart(2, 0);
+
+  //   const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  //   const year = date.getFullYear();
+
+  //   return `${day}/${month}/${year}`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(acc.locale, {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value);
+};
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(acc.movementsDates[i]);
 
+    const displayDate = formatMovementDate(date, acc.locale);
+    // const formattedMov=new Intl.NumberFormat(acc.locale,{
+    //     style:'currency',
+    //     currency:'USD',
+    // }).format(mov);
+    const formattedMov = formatCur(mov, acc.locale, acc.currency);
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+    <div class="movements__date">${displayDate}</div>
+         <div class="movements__value">${mov.toFixed(2)}€</div>
+         <div class="movements__value">${formattedMov}</div>
       </div>
     `;
 
@@ -104,19 +141,23 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const formattedMov = formatCur(acc.balance, acc.locale, acc.currency);
+  //   labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  labelBalance.textContent = `${formattedMov}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = formatCur(incomes, acc.locale, acc.currency);
+  //   labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
+  //   labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -126,7 +167,8 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
+  //labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 const createUsernames = function (accs) {
@@ -142,7 +184,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -150,10 +192,87 @@ const updateUI = function (acc) {
   // Display summary
   calcDisplaySummary(acc);
 };
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    //in each call, print the remaining time to ui
+    labelTimer.textContent = `${min}:${sec}`;
+    //decrease 1s
+    // time--;
 
+    //when 0 second ,stop timer and log out user.
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Log in to get started';
+      containerApp.style.opacity = 0;
+    }
+
+    //decrease 1s
+    time--;
+  };
+  //set time to 5minute
+  let time = 100;
+  tick();
+  //we want to call function immediately so we take it out in another function
+  //call the timer every second;
+  const timer = setInterval(
+    tick, //function () {
+    //     const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    //     const sec = String(time % 60).padStart(2, 0);
+    //     //in each call, print the remaining time to ui
+    //     labelTimer.textContent = `${min}:${sec}`;
+    //     //decrease 1s
+    //     time--;
+
+    //     //when 0 second ,stop timer and log out user.
+    //     if (time === 0) {
+    //       clearInterval(timer);
+    //       labelWelcome.textContent = 'Log in to get started';
+    //       containerApp.style.opacity = 0;
+    //     }
+    //   }
+    1000
+  );
+  return timer;
+};
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
+
+//Fake always logged in
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
+
+// const now = new Date();
+// const day = `${now.getDate()}`.padStart(2, 0);
+// // console.log(typeof day);
+// //here day is number so to pad with want to convert intostring
+// const month = `${now.getMonth() + 1}`.padStart(2, 0);
+// const year = now.getFullYear();
+// const hour = now.getHours();
+// const min = now.getMinutes();
+// labelDate.textContent = `${day}/${month}/${year},${hour}:${min}`;
+
+//Experimenting API
+const now = new Date();
+//option object.
+// const options = {
+//   hour: 'numeric',
+//   minute: 'numeric',
+//   day: 'numeric',
+//   month: 'long', //month:'numeric'//month:'2-digit'
+//   year: 'numeric',
+// };
+
+// //to geT user language from browser.
+// const locale = navigator.language;
+// console.log(locale);
+// //we have to pass locale string these locale is language -country
+// // labelDate.textContent = new Intl.DateTimeFormat('en-US').format(now);
+// labelDate.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+// labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(now);
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -170,11 +289,45 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+    //create current date and time
+
+    const now = new Date();
+    // const day = `${now.getDate()}`.padStart(2, 0);
+    // // console.log(typeof day);
+    // //here day is number so to pad with want to convert intostring
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const year = now.getFullYear();
+    // const hour = `${now.hour()}`.padStart(2, 0);
+    // const min = `${now.getMinutes()}`.padStart(2, 0);
+    // labelDate.textContent = `${day}/${month}/${year},${hour}:${min}`;
+
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'long', //month:'numeric'//month:'2-digit'
+      year: 'numeric',
+    };
+
+    //to geT user language from browser.
+    // const locale = navigator.language;
+    // console.log(locale);
+    //we have to pass locale string these locale is language -country
+    // labelDate.textContent = new Intl.DateTimeFormat('en-US').format(now);
+    labelDate.textContent = new Intl.DateTimeFormat('en-US', options).format(
+      now
+    );
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-
+    //timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
     // Update UI
     updateUI(currentAccount);
   }
@@ -198,8 +351,15 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    //add transfer date
+    currentAccount.movements.push(new Date().toISOString());
+    receiverAcc.movements.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
+
+    //reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -209,11 +369,18 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      // Add movement
+      currentAccount.movements.push(amount);
+      //add loan date
+      currentAccount.movements.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
 
-    // Update UI
-    updateUI(currentAccount);
+      //reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 3500);
   }
   inputLoanAmount.value = '';
 });
@@ -442,7 +609,7 @@ console.log(10 / 3); //3.33333
 
 //creating dates
 //month in js is 0 based.
-const now = new Date();
+const now1 = new Date();
 console.log(now);
 
 console.log(new Date('Aug 02 2020 18:05:41'));
@@ -478,3 +645,77 @@ console.log(Date.now());
 //set version
 future.setFullYear(2040);
 console.log(future);
+
+//operations on dates
+
+// we can subtract one date from another date in order to calculate how many days have passed,
+//whenever we convert a date into number the result is timstamp in millisecond
+
+const future1 = new Date(2037, 18, 19, 15, 23);
+// console.log(Number(future1));
+console.log(+future1);
+
+// function that take two dates and return number of days passed betwwen them.
+
+const calcdaysPassed = (date1, date2) =>
+  Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+// calcDisplayBalance(new Date(2037, 3, 4), new Date(2037, 3, 14));
+
+calcDisplayBalance(new Date(2037, 3, 4, 10, 8), new Date(2037, 3, 14));
+
+//need very precies calculation like time changes due to daylight saving changes,
+//use date library like moment.js
+
+//display in better movemnts like today,yesterday
+
+//Js has a Internatinalization API it allow us to easily format  dates and strings according to different languages.
+// foramt regualr numbers using interanationalizing api
+
+const num = 3884764.23;
+
+const options = {
+  style: 'unit', //style:'percent'//style:'currency'
+  unit: 'mile-per-hour', //unit:'celsius'
+  currency: 'EUR',
+  useGrouping: false,
+};
+console.log('US:  ', new Intl.NumberFormat('en-US', options).format(num));
+console.log('Germany:  ', new Intl.NumberFormat('de-DE').format(num));
+console.log('Syria:  ', new Intl.NumberFormat('ar-SY').format(num));
+console.log(
+  navigator.language,
+  new Intl.NumberFormat(navigator.language).format(num)
+);
+
+//timers in js two types: Timeout(run just once after a defined time) and setInterval(running forever,untill we stop it)
+
+//setTimeout() receive a callback function
+
+setTimeout(() => console.log('Here is your pizza 🍕'), 3000); //run after 3 sec.
+console.log('waiting...');
+// js keeping counting the time in the background and register callback function to be called after that time has elapsed and then immediately, js will move on
+// and this mechanism is called asynchronous js.
+// we are not calling the set time out function so it is not easy to passarguments so all the arguments here we pass after delay will be arguments to the function.
+
+setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza  with ${ing1} and ${ing2}🍕`),
+  3000,
+  'olivis',
+  'spanich'
+);
+//we can cancel timer before 3 sec passed for above setTimeout
+
+const ingredients = ['ovlies', 'spinach'];
+const pizzaTimer = setTimeout(
+  (ing1, ing2) => console.log(`Here is your pizza  with ${ing1} and ${ing2}🍕`),
+  3000,
+  ...ingredients
+);
+if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+//setInterval
+setInterval(function () {
+  const now = new Date();
+  console.log(now);
+}, 5000);
