@@ -482,7 +482,8 @@ console.log(Math.floor(Math.random() * 6) + 1);
 
 //generate any random number between two values
 
-const randomInt = (min, max) => Math.floor(Math.random() * (max - min)) + 1;
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min) + 1) + min;
 
 // 0...1 -> 0....(max-min)
 // add min both side

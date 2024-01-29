@@ -176,7 +176,7 @@ logo.classList.remove('c', 'j');
 logo.classList.toggle('c');
 logo.classList.contains('c'); //not includes
 //Don't use it because it override all existing classes
-logo.className = 'khushal';
+//logo.className = 'khushal';
 
 //smooth scrolling
 
@@ -254,3 +254,228 @@ h1.onmouseenter = function (e) {
 // not also all types of events that do have capturing and bublling phase
 //some are created right on the target element
 //event are propagating from one place to another (capturing and bubbling)
+
+//event propagation in practice
+//  by attach event handlers to navigation link
+
+//rgb(255,255,255)
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+//in event handler this keyword is always point to element on which event handler is attached.
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  //target is essentially where the event originated.(where the event first happen)(is not the element where event handler is actually attached.)
+  //current target is the element on which the event handler is attached.
+  console.log('Link', e.target, e.currentTarget);
+  console.log(e.currentTarget === this); //true
+});
+
+//add event listner only listening for events in the bubbling phase , not in capturing phase so that is the default behaviour
+//capturing phase not imp that much but the bubbling phase is very useful for called evnet delegation.
+//if we want to capture events in capturing phase ,we can define third parameter in the addEventListner function which is true(event handler will no longer listen to bublling events) or false.
+//both will look same but in console we see that nav look before container and navLink because nav see when the event as it travel down from the dom towards target while other listen event when it travel back up.
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Container', e.target, e.currentTarget);
+
+  //stop propagation
+  e.stopPropagation();
+});
+//now same event happen in parent element also which is .nav_links which is parent of .nav_link ,when we click on .nav_link event due to same event happen in parents that also start happen
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('Nav', e.target, e.currentTarget);
+  },
+  true
+);
+
+//use power of event bubbling to implement something called event delegation.
+//implement smoothing scrolling behaviour in naviagation
+//due to anchor when we click then it move to that section of id.
+//here we use forEach function for 3 elements but if there are 1000 elment then attach event handler to large numbers ,effecitvely creating 1000 copies of same function which impact performance.
+//so better solution is to used event delegation.(in this we use the fact that events bubble up)
+document.querySelectorAll('.nav__link').forEach(function (el) {
+  el.addEventListener('click', function (e) {
+    e.preventDefault();
+    const id = this.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// so we put our event handler on container .nav_links which is parent of all .nav__link
+
+//step1: implement eventlistner to common parent element of all we need.
+
+//step2: determine the what element originated the event.
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  console.log(e.target);
+  e.preventDefault();
+  //Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    console.log(id);
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//event delgelation is use like when we are working with elements that are not yet on the page on runtime,
+//by the time the page loads they come ex: button, are added dynamically while using the application so it is not possible to add eventhandler on that which not exist,
+// but we still handle that events by event delegation
+
+//DOM traversing(we can select an element based on another element)
+
+// const h1 = document.querySelector('h1');
+console.log(h1);
+
+//going downwords:child
+console.log(h1.querySelectorAll('.highlight')); //here it select all the element of highlight class this will work no matter how deep child element would be inside the h1 element.
+//direct childrens
+console.log(h1.childNodes);
+console.log(h1.children); //it give html collection
+
+//first and last element child
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'black';
+
+//going upwards: parents
+console.log(h1.parentNode); //direct parent element
+console.log(h1.parentElement);
+
+//some time we need a parent element which is not a direct parent
+//for this we have closest method
+
+//let there multiple class of header on page but we want to find the parent  (which is header) of elment of h1
+//it receive a querystring just like queryselector or queryselectorAll
+//it will select the closest header to our h1 element.
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+//if the selector mathches on which we are calling closest than that actually the element that's gonna be returned.
+//closest is opposite of queryselector ,queryselector find childrens no matter how deep in the dom tree
+//while closest method find the parents
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// going sideways : sibling
+//so we can only access direct sliblings in js
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+//find all the sibling (trick moving up to parent element then read all children)
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== h1) el.style.transform = 'scale(0.5)';
+});
+
+//tabbed component
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  console.log(clicked);
+
+  //Guard clause
+  if (!clicked) return;
+  //we need to read the data tab attribute,this one contains the number of tab that should become visible
+  // we used closest to find closest parent
+
+  //remove active class
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+  //active tab
+  clicked.classList.add('operations__tab--active');
+
+  //activate content area
+  console.log(clicked.dataset.tab);
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+//passing arguments to event handlers
+// all the links fade out when we hover over one of them,except for the link
+//menu fade animation
+
+const nav = document.querySelector('.nav');
+//mouseenter and mousehover is similar event difference is that mouseenter doesnot bubble.
+//opposite of mouseenter is mouseleave, and the opposite of this mouseover is mouseout.
+
+const handleHover = function (e) {
+  console.log(this, e.currentTarget); //1 or 0.5
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opactiy = this;
+    });
+    logo.style.opactiy = this;
+  }
+};
+// nav.addEventListener('mousehover', function (e) {
+//   //we dont use closest becuase no child element that could accidentally click here
+//   if (e.target.classList.contains('nav__link')) {
+//     const link = e.target;
+//     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+//     const logo = link.closest('.nav').querySelector('img');
+
+//     siblings.forEach(el => {
+//       if (el !== link) el.style.opactiy = 0.5;
+//     });
+//     logo.style.opactiy = 0.5;
+//   }
+// });
+
+// nav.addEventListener('mousehover', function (e) {
+//   if (e.target.classList.contains('nav__link')) {
+//     const link = e.target;
+//     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+//     const logo = link.closest('.nav').querySelector('img');
+
+//     siblings.forEach(el => {
+//       if (el !== link) el.style.opactiy = 1;
+//     });
+//     logo.style.opactiy = 1;
+//   }
+// });
+// nav.addEventListener('mousehover', handleHover(e,0.5));// it not work becuase e is not defined, and addeventlistner need a function but we here call the function which is a return something value but here we not return anythink
+// nav.addEventListener('mousehover', function (e) {
+//   handleHover(e, 0.5);
+// });
+// nav.addEventListener('mouseout', function (e) {
+//   handleHover(e, 1);
+// });
+
+//we can do better by blind method(it creates a copy of the function that it called on)
+
+//and it set the this keyword to value that we pass into bind
+
+//passing 'argument' into handler
+//handler function take only one argument
+nav.addEventListener('mousehover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+//sticky navigation the scroll event
+//use scroll event that fire on each time that we scroll on ourpage.
+
+const initialCoords = section1.getBoundingClientRect();
+console.log(initialCoords); // top coordinate from top to section 1.
+window.addEventListener('scroll', function () {
+  console.log(this.window.scrollY); // this is between the top of page to top of view point
+  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
+//it is bad for performance beacuse scroll event fires all the time ,no matter how small the change is here in the scroll
