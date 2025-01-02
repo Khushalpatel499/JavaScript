@@ -479,3 +479,242 @@ window.addEventListener('scroll', function () {
   else nav.classList.remove('sticky');
 });
 //it is bad for performance beacuse scroll event fires all the time ,no matter how small the change is here in the scroll
+
+//sticky navigation a betterw way the intersection observer API
+//this api allows our code to basically observe changes to the way that a certain target element intersects another element ,or the way it intersects the viewport.
+//we passs a callback function and a object of options
+
+//the callback function call each time that the observed element.
+// this function have two arguments entries(are acutally array of the threshold entries) and observer object itself
+const obsCallback = function (entries, observer) {
+  entries.forEach(entry => {
+    console.log(entry);
+  });
+};
+
+//when we scroll we get our first entry because the target element came into viewport.
+
+//it need first root property and the root is the element that the target is intersecting(we can select an element or alternative ,we can write null the we can observe our target element intersecting with entire viewport)
+//here section 1 is target
+// second is the threshold is basically the percentage of intersection at which the observer callback will be called.
+
+const obsOptions = {
+  root: null,
+  // threshold: 0.1, // mean if section come 10% in viewport then isvisible is true.
+  threshold: [0, 0.2], //0 means callback function trigger each time when target completly moves out of the view and also as soon as it enters the view.
+};
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+
+observer.observe(section1);
+
+const navHeight = nav.getBoundingClientRect().height;
+console.log(navHeight);
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  // rootMargin: '-90px', // means a box of 90pixel applied outside of our target element.
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
+
+//Reveal sections
+const allSection = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+  rootMargin: '200px',
+});
+allSection.forEach(function (section) {
+  sectionObserver.observer(section);
+  section.classList.add('section--hidden');
+});
+
+//lazy loading images
+
+const imgTargets = document.querySelectorAll('img[data-src]');
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  //replace src with data -src images
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+  observer.unobserve(entry.target);
+};
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
+
+const slider = function () {
+  //building a slider component
+  const slides = document.querySelectorAll('.slider');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotContainer = document.querySelector('.dots');
+
+  let curSlide = 0;
+  const maxSlide = slides.length;
+
+  // const slider = document.querySelector('.slider');
+  // slider.style.transform = 'scale(0.4) translateX(-800px)';
+  // slider.style.overflow = 'visible';
+
+  // slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+  // 0%,100%,200%,300%
+  activateDot(0);
+  const goToSlide = function (slide) {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+    );
+  };
+  goToSlide(0);
+
+  //Next slide
+
+  const nextSlide = function () {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const prevSlide = function () {
+    if (curSlide == 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const init = function () {
+    createDots();
+    goToSlide(0);
+    activateDot(0);
+  };
+  init();
+  // btnRight.addEventListener('click', function () {
+  //   if (curSlide === maxSlide - 1) {
+  //     curSlide = 0;
+  //   } else {
+  //     curSlide++;
+  //   }
+  //   // slides.forEach(
+  //   //   (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  //   // );
+  //   goToSlide(curSlide);
+  //   //-100%,0%,100%,200%
+  // });
+
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  document.addEventListener('keydown', function (e) {
+    console.log(e);
+    if (e.key === 'ArrowLeft') prevSlide();
+    e.key === 'ArrowRight' && nextSlide();
+  });
+
+  const createDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentElement(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      );
+    });
+  };
+
+  createDots();
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+  dotContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      // const slide = e.target.dataset.slide;
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+    }
+  });
+};
+slider();
+
+//life cycle dom event
+
+//dom content loaded (this event fired by the document as soon as the html is completely parsed, means that the html has been downloaded and been converted to the dom tree.)
+//all script must be downloaded and executed before the dom content loaded event can happen
+//this event not wait for images and other external resources to load.
+//we want all our code only to be executed after dom is available
+// that why we have script tag at last in html to import
+document.addEventListener('DOMContentLoadded', function (e) {
+  console.log('HTML parse and DOM tree built!', e);
+});
+// if you are coming to vanilla js from jQuery then you probably used to wrap all your code into a document ready function.
+
+// loadevent ( it is fired by window ,as soon as not only the html is parsed but also all the images and external resources like css files are also loaded.)
+
+window.addEventListener('load', function (e) {
+  console.log('Page fully loaded', e);
+});
+
+//beforeunload event(this event is create immediately before a user about to leave a page)
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  console.log(e);
+  //leaving confirmation
+  e.returnValue = '';
+});
+
+// different way of loading a js script in html
+//these attributes are gonna influence the way in which js file is fetched, which basically means download and then executed.
+//three way to add js file in html
+//1.regular <script src='script.js'></script>
+//2. Async <script async src='script.js'></script>
+//3. defer <script defer src='script.js'></script>
+
+// in the html we can write the script tag in document head , or usually at the end of the body
+
+//1. when we include a script without any attribute in the head , as the  user loads the page and receives the html, the html code to be start parsed by the browser and parsing the html is basically building the dom tree from the html element .
+// and at certain point it will find the script tag ,start to fetch the script and execute it and after that rest of the html can be parsed and after parsing dom content loaded get fired ,it is not used because we dont want do sitting browser doing nothing while fetch script
+
+//2. in async , the script is loaded at the same time when parsing html but it still stop when script execute.(means the script download asyncnously but execute in synchronous way)
+
+//3. in defer, the script is loaded  asychronously but the execution is deffered until the end of the html parsing.
