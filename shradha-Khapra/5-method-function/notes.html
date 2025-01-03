@@ -1,0 +1,83 @@
+<!-- 
+ 
+//Function
+1. Block of code that perform a specific task, can be invoked whenever needed.
+2.  to create function first we have to define and then call.
+
+ function functionName(para1,para2,..){
+ }
+
+ fucntionName();
+
+3. Function help us to save from redundancy or repeat of same think.
+
+4. Function parameter like local variable of function are have block scope.
+
+
+//Arrow Function 
+1. compact way of writing a function
+
+const functionName =(param1,param2,..)=>{
+}
+
+
+// ForEach loops in arrays(IMP)
+differnce betwwen function and method.
+ans: function is basically a block of code which take input and do some work and give output.
+ and if we associate the function with some object then this function become a method.
+
+1.arr.forEach(callBack Function)
+2.in js function can pass as a parameter and return a function value also(v,v,vimp)
+3. a callback is a function passed as an argument to another function.
+
+4. callback FUnction: here it is function to execcute for each element in the array.
+
+arr.forEach((val)=>{
+     console.log(val);
+    
+  });
+5. we don't to execute the forEach it automatically executed it.
+Ex: let arr=[1,2,3];
+arr.ForEach(function printVal(val){
+       console.log(val);
+});
+
+6. Mainly the callback pass in the form of arrow function.
+
+7. call back function have three parameter value,index, arrayitself
+
+8. this will not used for string forEach.
+
+IMP: what is higher order method/function?
+ans; the function which are take another function as a parameter or return other functions.
+ex: forEach
+
+
+
+//some more array methods
+
+1. Map:
+
+ 1. same as forEach like forEach do to go to each index and perform som operation to the value of that index.
+ similar map can also used to go to array each index and perform  operation with the values
+ 
+ 2.Imp: map return new array. what ever work we do with map give new value and crete new array form new values while forEach not create new array it only do our work only.
+ 3. map creates a new array with the results of some operation . The value its callback return are use to form new array.
+
+ syntax:  arr.map(callbackFunction(value,index,array))
+
+
+2. Filter:
+
+ 1. Create a new array of elements that give true for a condition/filter
+
+   let newArr = arr.filter((val)=>{
+   return val % 2==0;
+   });
+
+3. Reduce:
+
+ 1. Perform some operations and reduce the array to a single value. it return that single value.
+   ex: avg,sum etc
+ 2. it take two parameter result and value
+-->
