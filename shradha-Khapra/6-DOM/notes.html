@@ -1,0 +1,108 @@
+<!-- 
+ //Basic
+ 1. html(structure),css(style),js(logic).
+ 2. js prompt and alert temperory pause execution further and wait untill their window not closed.
+ 3. writing code in  different files help to readability, modularity(divide code in different files),browser caching(fast load time).
+ 4. if we include script tag in head instead of body means we have to load it before the body mean if we print now console.dir(document.body) then it print null(there is object but vacant).
+ 
+ //Window Object:
+  1. when ever we open a window there is a js type object which is always present.
+  2. window object represents an open window in a browser.
+  3. it is browser's object (not js) and is automatically create by browser.
+  4. it is global object with lots of properties and methods.
+  5. try write window in console.
+  6. console.log() is also part of window object
+
+
+//DOM: document object model(IMP)
+
+ 1.we can access all html code in js but how?
+ 2. automatically all html code come to js in an object.
+ 3. that special object is called document and that document available in window object.
+ 4. to check document object property console.dir(window.document).
+ 5. console.log()=> print the document element
+    console.dir()=> print special obejct like document with their property and method.
+
+ 6. basically=> window->document(it is basically a model who respresent html code)
+
+ 7. when a web page is loaded, the browser creates a Document Object Model(DOM) of the page.
+    it is basically a tree like structure and each box is called node and each node is a object.
+                    window
+                      |
+                  document
+                     |
+                    html
+                   /   \
+               head     body
+             / \        /   \
+      title link       div   script
+
+8. now we know how to access the html element in js but what next and why so let suppose we see that the user want to change the color from light to dark so to change we can't change the file data every time open ,so on runtime or dynamically when user access the data that change only can do is js not html or css.
+9. on user input the change are done are called dynamic changes or manipulation that is done through dom.
+
+
+
+//DOM Manipulation:
+1. to change in dom we need to acess that element.
+2. if we access script before body then it doesn't access the  dom elements.
+
+
+  accessing:
+
+  1. by using id: let i suppose give id to h1 tag in html and now i want to access it by
+      document.getElementById("myId");// it will return myId value so we can store it somewhere
+
+  2. Using class name: document.getElementsByClassName("myClass");
+   it give basically a html collection
+     HTml collection is similar to array because it also have indexes.
+     IMP: when there is no id present then it give null and when no class is present then it guve empty collection.
+
+
+
+  3. selecting with tag: document.getElementsByTag("p");
+     it also give html collection
+
+there is more better way then these is called query selector:
+
+/// Query Selector:
+
+  1. here we can pass id/class/tag
+
+     document.querySelector("myId/myClass/tag"); // return the first elment
+
+     document.querySelectorAll("myId/myClass/tag");// return a NodeList
+   IMP: node is basically every think that are in dom tree and collection of one or more node is called nodelist.
+
+   2. we have to always write class name with dot.
+
+
+// DOM manipulation properties:
+ on the properties we can get values(check) or set value (change)
+
+
+1. tagName: return tag for element nodes.
+
+2.innerText : returns the text content of the element and all its children //return only text content //we can set also
+
+3. innerHTML: returns the plain text or HTML contents in the element. // return both text and html content
+
+4.textContent: returns textual content even for hidden elements
+
+
+IMP:  when ever our dom tree created there are three types of nodes created:
+    1. text node  2. comment nodes         3. element node(we are mainly work with this)
+
+
+task: learn about firstchild,lastchild,navigation,different types of nodes.
+
+
+
+
+
+
+
+
+
+
+
+-->
