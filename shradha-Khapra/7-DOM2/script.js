@@ -65,3 +65,27 @@ document.querySelector("body").prepend(newHeading);
 // nH.remove();
 // we already access while creating so direct delete
 newHeading.remove();
+
+// Practice:
+
+let newBtn = document.createElement("button");
+newBtn.innerText = "click me";
+newBtn.style.backgroundColor = "red";
+newBtn.style.color = "white";
+
+document.querySelector("body").prepend(newBtn);
+
+//Pratice 2:
+
+let px = document.querySelector(".px");
+console.dir(px);
+//to get the attribute
+let pxa = px.getAttribute("class");
+console.log(pxa);
+// px.setAttribute("class", "newClass");
+//but it overwrite the old class property but we want to append not overwirte.
+console.log(pxa);
+
+console.log(px.classList);
+px.classList.add("newClass");
+console.log(px.classList);

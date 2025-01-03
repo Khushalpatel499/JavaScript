@@ -5,3 +5,12 @@
   color: white;
   border: 1px solid black;
 }
+
+.px {
+  background-color: purple;
+  font-size: 100px;
+}
+
+.newClass {
+  background-color: green;
+}
