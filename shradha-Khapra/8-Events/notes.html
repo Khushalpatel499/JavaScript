@@ -1,0 +1,78 @@
+<!-- 
+ //Events
+
+ 1. it is basically some changes in our code(ex: if we have a button and we click it then it is an event)
+ 2. each node of dom can provide some events.
+ 3.the change in state of an object is known as an event.
+ 4. events are fired to notify code of "interesting changes" that may affect code execution.
+ 5. Ex:mouse click(click,double click),kyboard event(keypress,keyup,keydown),form event(submit),print event.
+ 6. event can also be generate using environment like we have battery less than 20 then battery saver on that is also an event.
+ 7.  inline event handling is difficult so we have do in js using first acces the node and then apply the event on that using dotevent.
+ 8. arrow function have to invoke by calling them.(IMP)
+
+      node.event=()=>{
+      //handle here
+      }
+
+ 9.  if we handle inline event and js handle then the priority is for js handle.
+ 10. handler: it is a function that run after any event fire
+ 
+ 11. if we handle same element with same event then the last one overwritte all previous one.
+ 
+
+ //Event object:
+ 1. It is a special object that has detail about the event.
+ 2. event detail : which type of event(mouse,pointer,keybord etc).
+ 3. event target: where event apply(ex: div or button or etc);
+ 4. all event handlers have access to the event object's properties and methods.
+
+   node.event =(e)=>{
+   //handle here
+   }
+
+ 5. whenever we define our handler we can write a special argument here which is event object.
+ 6.clientx: where horizontally our event occur on screen
+   clinety: where vertically our event occur.
+
+ 7. e.type,e.target,e.clientX,e.clientY
+
+
+
+//Event listener:
+1. we have seen two way to handle event first is inline and other is in js to write node with event and an function.
+2.first inline have draw back that it make code bulkier.
+3.second  has drawback thatin one i we can write s single  function to handle a event
+
+4. one better way to handle events is event listner, they are listner(ready) for event and when event come start their work.
+5. for one event we can create multiple event listner.
+
+node.addEventListener(event,callback);
+node.removeEventListener(event,callback);
+
+note: the callback reference should be same to remove
+
+  btn1.addEventListener("click", () => {
+  console.log("button 1 again is here");
+});
+btn1.removeEventListener("click", () => {
+  console.log("button 1 again is here");
+});
+
+this event handle doesn't remove because both handler are different place in memory
+
+so for same referece we have to store it somewhere.
+let handle =()=>{
+ console.log("button 1 again is here");
+}
+
+btn1.addEventListener('click',handle);
+btn2.removeEventListner('click',handle);
+
+
+
+6. it take two values event(click,dbclick etc) and callback function it will occur when the event occur.this callback is also called event handler.
+7.
+
+
+
+-->
