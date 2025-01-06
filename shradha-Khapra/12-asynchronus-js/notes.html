@@ -1,0 +1,175 @@
+<!-- 
+ 
+   what is this?
+
+1. asynchronous programming js 2. async wait 3. promise chain 4. callback hell
+
+// better order for async  things
+// async await >> promise chains >> callback hell
+
+
+// Sync vs async in js
+
+1. synchronous: the code runs in a particular sequence of instructions given in the program.
+                Each instruction waits for* the previous instruction to complete its execution.
+
+2. Asynchronous: due to synchronous programming sometimes imp instructions get blocked due to some previous instructions, which cause a delay in the UI, asynchronous code execution allows to execute next instructions immediately and doesn't block the flow.
+
+//APIs: it is a system that is created by other users  where we can send request and  they return some data.
+
+3. setTimeout(functionName,milisecond) is a function that execute a function but when execute it will decide by us.
+   1sec =1000milisecond
+
+
+//callbacks 
+
+1. a callback is a function passed as an argument to another function.
+2. in real life when we use callback then there should be a problem can arises is called callback hell
+
+//Callback Hell
+1. Nested callbacks stacked below one another forming a pyramd structure.
+(Pyramid of Doom)
+this style of programming becomes difficult to understand and manage.
+2. to solve callback hell there is a way called Promises.
+3. we have to use callback but when we see the situation of callback hell then we have to go to optimazied using promises.
+
+
+//Promises:
+
+1. ex: when ever we ordered something onlline then there is situation that the order reach or not reach that promise is unfulfilled and when the order cancal or can't reach than promise  is reject and if reach then the promise is resolved.
+2.Promise in for "eventual" completion(it is complete or reject ) of task. It is an object in JS.
+3. it is solution to call back hell.
+
+let promise =new Promise((resolve,reject)=>{..})
+                       function with two handlers.
+
+  // resolve and reject are callback provided by js. 
+4. Promise is an object so it have a prototype,state and result
+5. Promise have three state 1. pending 2, fullfilled (resolved) 3. rejected
+  so to change state we have to call the resolve we can pass any thing inside.
+  resolve(123)
+6. for error use reject() and it show how error show on console.
+
+7. here we create promise in programming but in general we not create if we send a request to an api then it will send promise in return
+
+8. how api return promises
+ function getData(dataId,getNextData){
+ return new promises((resolve,reject)=>{
+ setTimeout(()=>{
+       console.log('data',dataId);
+       resolve('success');
+       if(getNextData){
+        getNextData();
+       }
+ },2000)
+ })
+ }
+
+ 
+
+
+
+ 9. when ever we call getData() it return promise and see it state is pending but after the 2 sec when data log still state is pending becuase we never do resolve or reject our promise.
+  for that if we successfully return the data then at last we resolve()
+
+
+
+//how to use promises:(we only use for fullfilled or reject becuase for pending we can only wait)
+1.  .then() and .catch()
+2. for fullfiled promise and use for some work then use : promise.then((res)=>{..})
+3. for reject promise and use for some work then use: promise.catch((err)=>{..})
+4. if we have and pending promise and we use .then it will only executed if the promise is gonna fullfill.
+
+
+
+//Promise chaning:
+1. let we have a function (aysnc becuase use setTimeout)and it return a promise and it contain a setTimout .
+
+
+
+
+--function getData(dataId,getNextData){
+ return new promises((resolve,reject)=>{
+ setTimeout(()=>{
+       console.log('data',dataId);
+       resolve('success');
+       if(getNextData){
+        getNextData();
+       }
+ },2000)
+ })
+ }
+
+ // do using promise chaining
+
+let p3 = getData(1);
+p3.then((res) => {
+  getData(4).then((res) => {
+    getData(5).then((res) => {
+      console.log(res);
+    });
+  });
+});
+
+//better way
+getData(1).then((res)=>{
+return getData(2); // .then is only work when getData(1) is fullfilled and inside it return data(2)
+}).then((res)=>{
+    return getData(3);
+});
+
+
+//there is a more better than 
+
+//Async-Await
+1. this both are keyword in js  there work is to make asynchronous programming to make simple.
+2. async function always return a promise.
+3. async function myFunc(){...}
+4. await means to wait ,it basically pause the exceution of surronding async function untill the promise is settled.
+5. let we call a function that return promise then if await that function then it pause the execution of surrounding untill promise is pending.
+6. await can only be used in async function not in normal function.
+7. 200 represent a successful api call.
+
+let we have api and we want to return that api after 2 sec so we put code in settimeout.
+
+
+function api(){
+return new promise ((resolve,reject)=>{
+    setTimeout(()=>{
+     console.log('weather data');
+     resolve(200);
+    },2000)
+})
+}
+
+now we know that the api is asynchronous call so it take time.
+so we use await front of it to stop further wait untill this not complete.
+
+await api(); //it give error becuase we need async function
+
+async function getWeather(){
+    await api();
+    await api();
+}
+    now here first is first api call is compelte then it will go for second.
+
+IMP: where .then and .catch used there async-await not used vice versa
+
+
+
+8. for callbackhell or promise chaining we don't have to put this code into any function while the code of async and await we have put it into function and then call it.
+9. so reduce this call we have an way in js
+
+//IIFE: immediately invoked function Expression
+
+1. if is immediatley invoked and soon as it define.
+2. they are only use at only one time.
+syntax: (func)();
+ex: (function(){
+})();
+
+(()=>{
+})();
+
+(async ()=>{
+})();

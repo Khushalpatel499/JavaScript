@@ -1,0 +1,105 @@
+<!-- 
+ 
+Object: it is a entity which have state and behaviour(properties and method)
+
+Prototype in Js:
+
+1. Js object have a special property called prototype.
+2. we can set prototype using __proto__
+
+Note: If object and prototype have same method, object's method will be used.
+
+3. in js whenever we use this means we talk about that object 
+4. Each object in js have a special type of property called prototype which is also a object.
+5. in js arr is a type of object.
+6. the bydefault function(like push ,pop etc) are come from the prototype object.
+7. all js object inheritece some basice properties and method from prototype;
+8. we can create our own prototype.
+
+IMP: two way to define method in object:
+
+     const employee={
+         calcTax1() {
+            console.log('tax rate is 10%');
+         }
+            or
+            calcTax1: function(){
+             console.log('tax rate is 10%');
+            }
+        
+     }
+
+ 9. If we want to use one object function to another object so we can write them as prototype.
+  10. objectwhereyouwanttouse.__proto__=objectofwhichyouwanttouse.
+  11. Prototype is a special type of property which is either null or reference to an object 
+
+
+//Classes
+
+1. if we want to create in bulk of similar object we create class.
+2. class is a program code template for creating objects.
+
+3. Those object will have some state (variables) and some behaviour(functions) inside it.
+
+
+class className {
+     constructor(){}
+    myMethod() {}
+}
+    let myObj =new MyClass();
+
+
+//Constructor() method:
+1.it is a special type of method
+2. automatically invoked by new(whenver we create a new object from a class then js search for construtor but it doesn't find then it will create it automatically)
+3. initializes object
+4. we can also pass argument to constructor as normal function 
+5. whenever we print object it show tyotacar class and inside all all detail of object because it object made of that class.
+
+
+//Inheritence 
+
+1.inheitence is passing down properties and methods from parent class to child class.
+
+2. in inheritence we use extend keyword.
+class Parent {
+}
+class child extends Parent{
+}
+
+Note: If child and parent have same method child's method will be use is called method overriding.
+
+
+3. we can do all over work with function only by defining each time in each class but the class make a easier or better way so we used it.
+
+
+
+//Super keyword
+
+1.the super keyword is used to call the constructor of its parent class to access the parent's properties and method.
+2. some time we have to call parent constructor from child class.
+
+super(args) // call Parent constructor
+super.parentMathod(args)
+
+Note: when ever we make constructor in child class (or derived class) so it have to use super to call parent class constructor first
+// this is becuase if we don't create constructor then it will automactically do becuase for every class there is a constructor.and it invoke automatically but when we create constrcutor in child class that take properties of parent and create constructor in child class but we not invoke the parent constructor because it always invoke when obj create so for rule we have to use super
+
+3. first we enter child constructor then parent and then exist from parent and then exist form child.
+4. if we want to excess parent class method and properites in child class so we have to use super.
+
+//Error Handling:
+
+1. if we write many lines of code and some where we do some error and console give error but due to this the other after the error line code of js not running still they have no error.
+2. to handle this error we have try-catch
+   try{
+     //normal code
+   }
+     catch(err){ //err is an object
+       //error handling
+     }
+
+
+
+
+-->
