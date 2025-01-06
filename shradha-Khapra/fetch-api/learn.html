@@ -1,0 +1,61 @@
+<!-- 
+ 
+1. learn all to call api end points and recevie data
+2. help to this make project of currency convertor.
+
+
+
+//Fetch API:
+
+1. we send a request to api and he send some response.
+2. to call api we use fetch api's.
+3.API- Application Programming interface.
+4 .  search on google free api those api have their documentation to that how to use and this api return data in a object format when we send request on link.
+5. Api is nothing but end points or url end points to send request and we get response.
+6. search api: https://free-apis.github.io/#/browse
+7. the fetch api provides an interface for fetching (sending/receiving) resources.
+8. It uses Request and Response objects.
+9. The fetch() method is used to fetch a resource(data).
+
+ syntax: let promise =fetch(url,[options])
+ // we write fetch method and write url inside and do this send a req to this url and return a promise and there some option also in fetch.
+
+ 10.it give promiseResult as response , with status 200 means success
+ 11. to get data from promise we have promoise chaining .then .catch but there is a more way.
+ 12. asyc await is better way.
+ 13. when we send req to api and when data return to us there is no reload to our page.
+ 14. whenever we used fetch method and not send any option then fetch method create a particular type of request GET request.
+ 15. GET Request: the request which bring some some data from any api or server.
+ 16. we got the data in console and in browser is in form of different format.
+
+ //Understanding Terms:
+
+ 1.AJAX is asynchronous js and XML
+    early when their is no modern js then network request means api request,early data come in xml format but now days come in json format.
+ 2. data format:  sending data in different format (like money to give in cash,netbanking,upi);
+ 3. JSON is javascript object notation(it look like js object)
+ 4. in our code the response come in format of jason .
+ 5. today maximum api respond data in json format so we also called that ajaj;
+ 6. still today the exchange (network of network req) it called  ajax.
+ 7. how the api call works, when we first send the api request it get some response this response is in json format we have to convert this in js object.
+ 8. to convert we use json() method is also a async method it also return promise..
+ 9. json() method: returns a second promise that resolves with the result of parsing the response body text as JSON.(Input is JSON, output is JS object).
+ 10. this usable data contain a array
+
+ //Requests and Response
+
+ 1. whenvever we send request to api or server then it contain some http verbs(hyper text transfer protocol) and verbs tell which type of request we send
+ ex: GET,HEAD,POST,PUT,DELETE,CONNECT,OPTIONS,TRACE,PATCH
+
+2. Response status code: 200 means success,client side error is 400, api error or server side error 500
+
+3. when ever we send req and receive  response their is an header
+4. http response headers also contain details about the responses,such as content type,HTTP status code etc.
+
+//learn about sending POST req
+
+
+//Now create  a currency convertor
+1. for flags we use flagsapi and use font awesome cdnjs
+
+-->
