@@ -55,6 +55,20 @@ let gameNumber = 12;
 //   }
 // }
 
+// to use !== we have to convert the number 
+let guessNumber = Number(prompt("Guess the number:"));
+
+// while (guessNumber !== gameNumber) {
+//   if (guessNumber > gameNumber) {
+//     guessNumber = Number(prompt("Too high! Try again:"));
+//   } else {
+//     guessNumber = Number(prompt("Too low! Try again:"));
+//   }
+// }
+
+// alert(" Correct! You guessed the number.");
+
+
 //string
 
 let str1 = "khushal";
