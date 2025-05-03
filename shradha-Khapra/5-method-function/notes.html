@@ -14,6 +14,15 @@
 4. Function parameter like local variable of function are have block scope.
 
 
+Because const only protects the variable reference, not the value it points to.
+const person = { name: "Alice" };
+person is a reference (a pointer) to the object { name: "Alice" }.
+const locks the reference, not the object itself.
+
+person.name = "Bob";      //  Allowed → you're changing the object
+person = { name: "John" } //  Not allowed → you're changing the reference
+
+
 //Arrow Function 
 1. compact way of writing a function
 
