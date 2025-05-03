@@ -26,9 +26,14 @@ const sum1 = (a, b) => {
 
 console.log(sum1(1, 2));
 
-const print = () => console.log("hello"); //self invoke
-
+const print = () => console.log("hello"); 
 print();
+
+(function () {
+  console.log("hello from self-invoked function");
+})(); //  this is a self-invoking IIFE//self invoke
+
+
 
 // Pratice1:
 
