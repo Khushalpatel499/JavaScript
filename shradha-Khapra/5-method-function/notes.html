@@ -85,6 +85,12 @@ ex: forEach
    });
 
 3. Reduce:
+let result = arr.reduce((accumulator, currentValue) => {
+  return updatedAccumulator;
+}, initialValue);
+imp: If you don’t provide an initial value, JavaScript will:
+Take the first element of the array as the initial acc (accumulator)
+Start the loop from the second element
 
  1. Perform some operations and reduce the array to a single value. it return that single value.
    ex: avg,sum etc
