@@ -34,15 +34,18 @@
 1. a way to have embedded expression in strings.
 2  ex: let x=`this is me`;
    it help to write variable and string in one line.
-   ex: console.log("my name ${obj.name}");
+   ex: console.log(`my name ${obj.name}`);
      the variable data come by ${};
      but here the template literal is part of string so it is string not the type which was define earlier. 
   string interpolation: to create strings by doing substitution of placeholders.
+oldway: const name = "Ali";
+console.log("My name is " + name); // old way
+newWay: console.log(`My name is ${name}`); // new way using interpolation
 
 //escape character:
 1. \n ->next line ex: console.log("my \n name");
 2. \t= tab space(space between)
-3. in legth if we calulcate then it count as single character still there are two \ or n.
+3. in length if we calulcate then it count as single character still there are two \ or n.
 
 //Strings Method:
 1. there are in built methods.
